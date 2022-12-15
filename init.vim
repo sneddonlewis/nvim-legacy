@@ -79,4 +79,4 @@ let mapleader = " "
 noremap <leader>t :FloatermNew --name=myfloat  <CR>
 noremap <leader>f :GFiles <CR>
 noremap <leader>h :HopWord <CR>
-
+nnoremap <leader>n :NERDTreeFocus<CR>
