@@ -14,7 +14,11 @@ call plug#begin()
     \ 'do': 'bash install.sh',
     \ }
     Plug 'voldikss/vim-floaterm'
+    Plug 'numToStr/Comment.nvim'
 call plug#end()
+
+" Comment mappings
+lua require('Comment').setup()
 
 " Required for operations modifying multiple buffers like rename.
 set hidden
