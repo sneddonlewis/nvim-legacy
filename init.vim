@@ -8,7 +8,10 @@ call plug#begin()
     Plug 'scrooloose/nerdtree'
     Plug 'preservim/nerdcommenter'
     Plug 'mhinz/vim-startify'
-    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    Plug 'neoclide/coc.nvim', {
+    \ 'branch': 'release',
+    \ 'do' : 'yarn install --frozen-lockfile',
+    \}
     Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
@@ -18,6 +21,9 @@ call plug#begin()
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
     Plug 'phaazon/hop.nvim'
+    let g:coc_global_extensions = ['coc-tslint-plugin', 'coc-tsserver', 'coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-yank', 'coc-prettier']
+    Plug 'ianks/vim-tsx'
+    Plug 'leafgarland/typescript-vim'
 call plug#end()
 
 " Comment mappings
@@ -73,6 +79,10 @@ let &t_ZR="\e[23m"
 autocmd VimEnter * NERDTree | wincmd p
 " Exit Vim if NERDTree is the only window remaining in the only tab.
 autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+
+" React stuff
+au BufNewFile,BufRead *.ts setlocal filetype=typescript
+au BufNewFile,BufRead *.tsx setlocal filetype=typescript.tsx
 
 " Shortcuts
 let mapleader = " "
