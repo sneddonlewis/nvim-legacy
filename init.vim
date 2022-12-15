@@ -17,10 +17,12 @@ call plug#begin()
     Plug 'numToStr/Comment.nvim'
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
+    Plug 'phaazon/hop.nvim'
 call plug#end()
 
 " Comment mappings
 lua require('Comment').setup()
+lua require('hop').setup()
 
 " Required for operations modifying multiple buffers like rename.
 set hidden
@@ -76,3 +78,5 @@ autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTr
 let mapleader = " "
 noremap <leader>t :FloatermNew --name=myfloat  <CR>
 noremap <leader>f :GFiles <CR>
+noremap <leader>h :HopWord <CR>
+
