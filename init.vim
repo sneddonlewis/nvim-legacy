@@ -15,6 +15,8 @@ call plug#begin()
     \ }
     Plug 'voldikss/vim-floaterm'
     Plug 'numToStr/Comment.nvim'
+    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+    Plug 'junegunn/fzf.vim'
 call plug#end()
 
 " Comment mappings
@@ -73,3 +75,4 @@ autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTr
 " Shortcuts
 let mapleader = " "
 noremap <leader>t :FloatermNew --name=myfloat  <CR>
+noremap <leader>f :GFiles <CR>
