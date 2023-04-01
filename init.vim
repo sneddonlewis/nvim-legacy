@@ -3,7 +3,6 @@ call plug#begin()
     " Plug '<github-user>/<repo-name>'
     Plug 'dracula/vim'
     Plug 'ryanoasis/vim-devicons'
-    Plug 'SirVer/ultisnips'
     Plug 'honza/vim-snippets'
     Plug 'scrooloose/nerdtree'
     Plug 'preservim/nerdcommenter'
@@ -76,9 +75,9 @@ let &t_ZR="\e[23m"
 
 " File browser
 " Start NERDTree but leave the cursor in the buffer 
-autocmd VimEnter * NERDTree | wincmd p
+" autocmd VimEnter * NERDTree | wincmd p
 " Exit Vim if NERDTree is the only window remaining in the only tab.
-autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+" autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
 
 " React stuff
 au BufNewFile,BufRead *.ts setlocal filetype=typescript
