@@ -1,8 +1,8 @@
 " Plugins
 call plug#begin()
     " Plug '<github-user>/<repo-name>'
+    Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
     Plug 'dracula/vim'
-    Plug 'ryanoasis/vim-devicons'
     Plug 'honza/vim-snippets'
     Plug 'scrooloose/nerdtree'
     Plug 'preservim/nerdcommenter'
@@ -34,8 +34,6 @@ set hidden
 
 let g:LanguageClient_serverCommands = {
     \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
-    \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
-    \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
     \ }
 
 nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
