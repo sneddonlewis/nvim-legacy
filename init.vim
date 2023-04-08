@@ -1,7 +1,7 @@
 " Plugins
 call plug#begin()
     " Plug '<github-user>/<repo-name>'
-    Plug 'savq/melange-nvim'
+    Plug 'morhetz/gruvbox'
     Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
     Plug 'honza/vim-snippets'
     Plug 'scrooloose/nerdtree'
@@ -69,7 +69,9 @@ set noswapfile              " disable creating swap file
 
 " Color scheme
 set termguicolors           " enhanced colours
-colorscheme melange
+set background=dark
+colorscheme gruvbox
+
 " Transparent background
 hi! Normal guibg=NONE ctermbg=NONE
 
