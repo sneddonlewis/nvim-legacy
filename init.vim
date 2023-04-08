@@ -1,8 +1,8 @@
 " Plugins
 call plug#begin()
     " Plug '<github-user>/<repo-name>'
+    Plug 'savq/melange-nvim'
     Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-    Plug 'dracula/vim'
     Plug 'honza/vim-snippets'
     Plug 'scrooloose/nerdtree'
     Plug 'preservim/nerdcommenter'
@@ -24,6 +24,9 @@ call plug#begin()
     Plug 'ianks/vim-tsx'
     Plug 'leafgarland/typescript-vim'
 call plug#end()
+
+" Python3 provider
+let g:python3_host_prog = '/usr/bin/python3'
 
 " Comment mappings
 lua require('Comment').setup()
@@ -66,7 +69,9 @@ set noswapfile              " disable creating swap file
 
 " Color scheme
 set termguicolors           " enhanced colours
-colorscheme dracula
+colorscheme melange
+" Transparent background
+hi! Normal guibg=NONE ctermbg=NONE
 
 let &t_ZH="\e[3m"           " italic support
 let &t_ZR="\e[23m"
