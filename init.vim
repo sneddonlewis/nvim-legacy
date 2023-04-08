@@ -96,10 +96,6 @@ noremap <leader>h :HopWord <CR>
 nnoremap <leader>n :NERDTreeFocus<CR>
 
 " Auto close brackets and stuff
-inoremap " ""<left>
-inoremap ' ''<left>
-inoremap ( ()<left>
-inoremap [ []<left>
 inoremap { {}<left>
 inoremap {<CR> {<CR>}<ESC>O
 inoremap {;<CR> {<CR>};<ESC>O
