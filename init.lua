@@ -135,6 +135,9 @@ require("toggleterm").setup{
 	open_mapping = [[<M-j>]]
 }
 
+-- Terminal keymap
+vim.keymap.set('n', '<leader>t', ':ToggleTerm size=15 direction=horizontal <CR>')
+
 -- Adding the same comment color in each theme
 vim.cmd([[
 	augroup CustomCommentCollor
