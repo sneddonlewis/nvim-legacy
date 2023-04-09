@@ -4,6 +4,7 @@ vim.g.mapleader = " "
 require("packer").startup(function(use)
 	use { "wbthomason/packer.nvim" }
 	use { "ellisonleao/gruvbox.nvim" }
+	use { "folke/tokyonight.nvim" }
 	use('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
 	use {
 		'nvim-telescope/telescope.nvim', tag = '0.1.1',
@@ -71,18 +72,21 @@ require'nvim-treesitter.configs'.setup {
 }
 
 -- GRUVBOX
-require("gruvbox").setup({
-	contrast = "hard",
-	palette_overrides = {
-		gray = "#2ea542",
-	}
-})
+-- require("gruvbox").setup({
+	-- contrast = "hard",
+	-- palette_overrides = {
+		-- gray = "#2ea542",
+	-- }
+-- })
+
+-- Theme
+vim.cmd[[colorscheme tokyonight]]
 
 -- LUALINE
 require("lualine").setup{
 	options = {
 		icons_enabled = false,
-		theme = "onedark",
+		theme = "tokyonight",
 		component_separators = "|",
 		section_separators = "",
 	},
@@ -131,8 +135,6 @@ require("toggleterm").setup{
 	open_mapping = [[<M-j>]]
 }
 
--- COLORSCHEME
-vim.cmd("colorscheme gruvbox")
 -- Adding the same comment color in each theme
 vim.cmd([[
 	augroup CustomCommentCollor
