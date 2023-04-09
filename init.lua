@@ -1,4 +1,3 @@
-print("Welcome Lewis! How are you doing today?")
 
 vim.g.mapleader = " "
 
