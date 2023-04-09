@@ -152,12 +152,10 @@ vim.cmd([[
 
 vim.o.background = "dark"
 
-vim.keymap.set("i", "jj", "<Esc>")
 
-vim.opt.guicursor = "i:block"
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
-vim.opt.number = false
+vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.swapfile = false
 
