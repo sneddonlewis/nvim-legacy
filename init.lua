@@ -147,12 +147,12 @@ vim.cmd([[
 ]])
 
 -- Disable annoying match brackets and all the jaz
-vim.cmd([[
-	augroup CustomHI
-		autocmd!
-		autocmd VimEnter * NoMatchParen 
-	augroup END
-]])
+-- vim.cmd([[
+	-- augroup CustomHI
+		-- autocmd!
+		-- autocmd VimEnter * NoMatchParen 
+	-- augroup END
+-- ]])
 
 vim.o.background = "dark"
 
