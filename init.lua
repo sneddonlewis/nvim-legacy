@@ -3,6 +3,7 @@ vim.g.mapleader = " "
 
 require("packer").startup(function(use)
 	use { "wbthomason/packer.nvim" }
+	use { "EdenEast/nightfox.nvim" }
 	use { "ellisonleao/gruvbox.nvim" }
 	use { "folke/tokyonight.nvim" }
 	use('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
@@ -80,13 +81,13 @@ require'nvim-treesitter.configs'.setup {
 -- })
 
 -- Theme
-vim.cmd[[colorscheme tokyonight]]
+vim.cmd[[colorscheme nightfox]]
 
 -- LUALINE
 require("lualine").setup{
 	options = {
 		icons_enabled = false,
-		theme = "tokyonight",
+		theme = "nightfox",
 		component_separators = "|",
 		section_separators = "",
 	},
