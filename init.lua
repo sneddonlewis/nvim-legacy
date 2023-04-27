@@ -1,43 +1,21 @@
 
 vim.g.mapleader = " "
 
-require("packer").startup(function(use)
-	use { "wbthomason/packer.nvim" }
-	use { "EdenEast/nightfox.nvim" }
-	use { "ellisonleao/gruvbox.nvim" }
-	use { "folke/tokyonight.nvim" }
-	use('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
-	use {
-		'nvim-telescope/telescope.nvim', tag = '0.1.1',
-		 requires = { {'nvim-lua/plenary.nvim'} }
-	}
-	use {
-	  'nvim-lualine/lualine.nvim',
-	   requires = { 'kyazdani42/nvim-web-devicons', opt = true }
-	}
-	use { "fatih/vim-go" }
-	use {
-		'VonHeikemen/lsp-zero.nvim',
-  		branch = 'v1.x',
-  		requires = {
-		{'neovim/nvim-lspconfig'},             -- Required
-		{'williamboman/mason.nvim'},           -- Optional
-		{'williamboman/mason-lspconfig.nvim'}, -- Optional
-		{'hrsh7th/nvim-cmp'},         -- Required
-		{'hrsh7th/cmp-nvim-lsp'},     -- Required
-		{'hrsh7th/cmp-buffer'},       -- Optional
-		{'hrsh7th/cmp-path'},         -- Optional
-		{'saadparwaiz1/cmp_luasnip'}, -- Optional
-		{'hrsh7th/cmp-nvim-lua'},     -- Optional
-		{'L3MON4D3/LuaSnip'},             -- Required
-		{'rafamadriz/friendly-snippets'}, -- Optional
-  	},
-	use {"akinsho/toggleterm.nvim", tag = '*' },
-	use "jhlgns/naysayer88.vim",
-	use "terrortylor/nvim-comment",
-	use "CreaturePhil/vim-handmade-hero"
-}
-end)
+-- IMPORTS
+require('plug') -- Plugins
+require('opts') -- Options
+
+-- Mason Setup
+require("mason").setup({
+    ui = {
+        icons = {
+            package_installed = "",
+            package_pending = "",
+            package_uninstalled = "",
+        },
+    }
+})
+require("mason-lspconfig").setup()
 
 -- some
 vim.keymap.set("n", "<M-b>", ":Ex<CR>")
@@ -64,22 +42,6 @@ vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { de
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 
--- TREESITTER
-require'nvim-treesitter.configs'.setup {
-	ensure_installed = {"c", "lua", "vim", "go", "javascript", "typescript", "rust"},
-	highlight = {
-		enable = true,
-	}
-}
-
--- GRUVBOX
--- require("gruvbox").setup({
-	-- contrast = "hard",
-	-- palette_overrides = {
-		-- gray = "#2ea542",
-	-- }
--- })
-
 -- Theme
 vim.cmd[[colorscheme nightfox]]
 
@@ -94,35 +56,103 @@ require("lualine").setup{
 }
 
 -- LSP
-local lsp = require("lsp-zero")
+local rt = require("rust-tools")
 
-lsp.preset("recommended")
+rt.setup({
+  server = {
+    on_attach = function(_, bufnr)
+      -- Hover actions
+      vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
+      -- Code action groups
+      vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+    end,
+  },
+})
+-- LSP Diagnostics Options Setup 
+local sign = function(opts)
+  vim.fn.sign_define(opts.name, {
+    texthl = opts.name,
+    text = opts.text,
+    numhl = ''
+  })
+end
 
-lsp.ensure_installed({
-	"tsserver",
-	"gopls",
-	"eslint",
-	"rust_analyzer",
+sign({name = 'DiagnosticSignError', text = ''})
+sign({name = 'DiagnosticSignWarn', text = ''})
+sign({name = 'DiagnosticSignHint', text = ''})
+sign({name = 'DiagnosticSignInfo', text = ''})
+
+vim.diagnostic.config({
+    virtual_text = false,
+    signs = true,
+    update_in_insert = true,
+    underline = true,
+    severity_sort = false,
+    float = {
+        border = 'rounded',
+        source = 'always',
+        header = '',
+        prefix = '',
+    },
 })
 
-lsp.set_preferences({
-	sign_icons = {}
+vim.cmd([[
+set signcolumn=yes
+autocmd CursorHold * lua vim.diagnostic.open_float(nil, { focusable = false })
+]])
+
+-- Completion Plugin Setup
+local cmp = require'cmp'
+cmp.setup({
+  -- Enable LSP snippets
+  snippet = {
+    expand = function(args)
+        vim.fn["vsnip#anonymous"](args.body)
+    end,
+  },
+  mapping = {
+    ['<C-p>'] = cmp.mapping.select_prev_item(),
+    ['<C-n>'] = cmp.mapping.select_next_item(),
+    -- Add tab support
+    ['<S-Tab>'] = cmp.mapping.select_prev_item(),
+    ['<Tab>'] = cmp.mapping.select_next_item(),
+    ['<C-S-f>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.close(),
+    ['<CR>'] = cmp.mapping.confirm({
+      behavior = cmp.ConfirmBehavior.Insert,
+      select = true,
+    })
+  },
+  -- Installed sources:
+  sources = {
+    { name = 'path' },                              -- file paths
+    { name = 'nvim_lsp', keyword_length = 3 },      -- from language server
+    { name = 'nvim_lsp_signature_help'},            -- display function signatures with current parameter emphasized
+    { name = 'nvim_lua', keyword_length = 2},       -- complete neovim's Lua runtime API such vim.lsp.*
+    { name = 'buffer', keyword_length = 2 },        -- source current buffer
+    { name = 'vsnip', keyword_length = 2 },         -- nvim-cmp source for vim-vsnip 
+    { name = 'calc'},                               -- source for math calculation
+  },
+  window = {
+      completion = cmp.config.window.bordered(),
+      documentation = cmp.config.window.bordered(),
+  },
+  formatting = {
+      fields = {'menu', 'abbr', 'kind'},
+      format = function(entry, item)
+          local menu_icon ={
+              nvim_lsp = 'λ',
+              vsnip = '⋗',
+              buffer = 'Ω',
+              path = '🖫',
+          }
+          item.menu = menu_icon[entry.source.name]
+          return item
+      end,
+  },
 })
-
-lsp.on_attach(function(client, bufnr)
-	local opts = {buffer = bufnr, remap = false}
-	vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
-end)
-
-lsp.setup()
-
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-	vim.lsp.diagnostic.on_publish_diagnostics, {
-		signs = false,
-		virtual_text = true,
-		underline = false,
-	}
-)
 
 -- COMMENT
 require("nvim_comment").setup({
